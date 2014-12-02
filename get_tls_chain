@@ -1,0 +1,9 @@
+#!/bin/bash
+if [[ -z "$1" || -z "$2" ]]; then
+  echo "Usage: $0 <server> <port>";
+  exit;
+fi;
+
+echo QUIT | \
+openssl s_client -tls1_2 -connect $1:$2 -showcerts | awk '/BEGIN /,/END /' > "chain_$1.pem"
+
