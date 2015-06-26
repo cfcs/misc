@@ -7,6 +7,7 @@ import gobject
 import sys
 import threading
 import os
+import time
 import socket
 import select
 
@@ -18,23 +19,23 @@ class TrayIcon(threading.Thread):
     self.icon.connect('activate', self.on_left_click)
 
   def run(self):
-    loop = select.epoll()
-    print 'opening', self.pipe
-    self.fd = open(self.pipe, 'r')
-    loop.register(self.fd, select.EPOLLIN)
+    ##loop = select.epoll()
+    ##print 'opening', self.pipe
+    ##self.fd = open(self.pipe, 'r')
+    ##loop.register(self.fd, select.EPOLLIN)
     print '.. registered', self.pipe
     while True:
-      ret = loop.poll()
-      print ret
-      for (fd, event) in ret:
-        print fd
-        if event == select.EPOLLHUP:
+      ##ret = loop.poll()
+      ##print ret
+      ##for (fd, event) in ret:
+        ##print fd
+        ##if event == select.EPOLLHUP:
           ## fifo closed, TODO handle that
-          loop.unregister(fd)
-          self.fd = open(self.pipe, 'r')
-          loop.register(self.fd, select.EPOLLIN)
-          continue
-        status = os.read(fd, 4096).strip()
+        ##  loop.unregister(fd)
+        ##  self.fd = open(self.pipe, 'r')
+        ##  loop.register(self.fd, select.EPOLLIN)
+        ##  continue
+        status = open(self.pipe, 'r').read().strip()
         ## possible states:
         # let to_string = function
         # | Q -> "quit"
@@ -42,6 +43,7 @@ class TrayIcon(threading.Thread):
         # | C -> "connected"
         # | D_N -> "disconnected_notifications"
         # | C_N -> "connected_notifications"
+        #print status
         if 'connected_notifications' in status \
         or 'disconnected_notifications' in status:
           self.icon.set_from_stock(gtk.STOCK_ABOUT)
@@ -50,12 +52,13 @@ class TrayIcon(threading.Thread):
           self.icon.set_visible(False)
         elif 'quit' in status:
           self.icon.set_from_stock(gtk.STOCK_DELETE)
-          print 'we have quit'
+          #print 'we have quit'
         elif 'disconnected' in status:
-          print 'we have disconnected'
+          #print 'we have disconnected'
           self.icon.set_from_stock(gtk.STOCK_DELETE)
         else:
           print 'unknown status: ', status
+        time.sleep(1)
 
   def on_left_click(self, event):
     self.icon.set_visible(False)
