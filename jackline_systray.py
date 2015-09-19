@@ -1,5 +1,10 @@
 #!/usr/bin/env python2
 
+# you may want to use this instead:
+# https://github.com/posiputt/jackification/blob/master/jackification.py
+
+# Usage: see https://github.com/cfcs/misc/issues/1
+
 ## apt-get install python-gtk2
 
 import gtk
