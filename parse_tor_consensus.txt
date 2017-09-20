@@ -1,0 +1,6 @@
+get ports + servers that serve the consensus (and have the Stable flag):
+cat /var/lib/tor/cached-microdesc-consensus |grep '^r ' -A2|grep V2Dir -B2|grep Stable -B2|grep ^r|awk '{print $6":"$8}'
+
+consensus url:
+/tor/status-vote/current/consensus
+https://consensus-health.torproject.org/
