@@ -1,0 +1,19 @@
+#!/bin/bash -eu
+echo "Usage: $0 [example.com] [username] [password] | openssl s_client -starttls xmpp -connect [server]:5222" 1>&2
+
+server="$1"
+username="$2"
+password="$3"
+
+cat <<EOF
+<?xml version='1.0'?><stream:stream to='${server}' version='1.0' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client'>
+<iq type='get' id='reg1' to='${server}'>
+  <query xmlns='jabber:iq:register'/>
+</iq>
+<iq type='set' id='purple$(xxd -l 4 -p /dev/urandom)' to='${server}'>
+  <query xmlns='jabber:iq:register'>
+    <username>${username}</username>
+    <password>${password}</password>
+</query></iq>
+EOF
+cat
