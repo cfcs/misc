@@ -1,9 +1,10 @@
 # *Less advanced* (maybe)
 - SOCKS proxy MirageOS unikernel
   - there's a [socks library](https://github.com/cfcs/ocaml-socks)
+
 - pure CRC library ([CRC-32](https://en.wikipedia.org/wiki/CRC32), `CRC16`, etc)
   - there are various pure implementations around of misc CRC variants, would be nice to have them in one place
-  - openpgp crc-24
+  - [openpgp crc-24](https://github.com/cfcs/ocaml-openpgp/blob/13dfb087fc4dacec33f69cc57ef768bc0a617dd7/lib/types.ml#L708-L754)
   - fast [sRGB](https://en.wikipedia.org/wiki/SRGB)`<->`[HSV](https://en.wikipedia.org/wiki/HSL_and_HSV) (or whatever) conversions for color gradients
     - with/without floats (I'm mainly interested in *without*)
 - [Sakura tree hashing (with a streaming API)](https://keccak.team/files/Sakura.pdf)
