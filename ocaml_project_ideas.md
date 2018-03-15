@@ -1,12 +1,19 @@
-# *Less advanced* (maybe)
-- [.po file format](http://pology.nedohodnik.net/doc/user/en_US/ch-poformat.html) for internationalization
-  - parser (using [Angstrom](https://github.com/inhabitedtype/angstrom)?)
-  - Fmt / Logs integration ?
-  - ppx ?
+a list of projects suggested by me, or other people, in passing conversation, that I would like to see realized :)
+
+# *MirageOS / QubesOS integration*
 
 - SOCKS proxy MirageOS unikernel
   - there's a [socks library](https://github.com/cfcs/ocaml-socks)
 
+- [MirageOS](https://mirage.io) image cleaner (converting `* -> bitmap`), for inclusion in [QubesOS](https://qubes-os.org/)
+  - see [qubes-convert-img](https://github.com/QubesOS/qubes-app-linux-img-converter)
+  - easy! except we don't have a BMP library. see points about `imagelib` below
+
+# *Misc ~ less advanced* (maybe)
+- [.po file format](http://pology.nedohodnik.net/doc/user/en_US/ch-poformat.html) for internationalization
+  - parser (using [Angstrom](https://github.com/inhabitedtype/angstrom)?)
+  - Fmt / Logs integration ?
+  - ppx ?
 - pure CRC library ([CRC-32](https://en.wikipedia.org/wiki/CRC32), `CRC16`, etc)
   - there are various pure implementations around of misc CRC variants, would be nice to have them in one place
   - [openpgp crc-24](https://github.com/cfcs/ocaml-openpgp/blob/13dfb087fc4dacec33f69cc57ef768bc0a617dd7/lib/types.ml#L708-L754)
@@ -31,14 +38,15 @@
 - [imagelib](https://github.com/rlepigre/ocaml-imagelib) has a pure picture format implementations
   - JPG support in imagelib
   - GIF support in imagelib
-  - pure QRcode library, ideally working with imagelib
-    - perhaps inspired by https://github.com/cozmo/jsQR
+
+- pure QRcode library, ideally working with imagelib
+  - perhaps inspired by https://github.com/cozmo/jsQR
 - [ZIP](https://en.wikipedia.org/wiki/Zip_%28file_format%29) file utility using [decompress](https://github.com/dinosaure/decompress)
 - `diff`/`patch` (TODO research different formats/algorithms, does ocaml-git implement this?)
 - graphviz implementation (just the layouting/positioning/coordinates, not necessarily the drawing)
 - adding session resumption to [tlsping](https://github.com/cfcs/tlsping)
 
-# *Advanced* (maybe)
+# *Misc ~ more advanced* (maybe)
 - CI tool for determining if an opam package update breaks the API and enforces semantic versioning
   - maybe see Camelus
   - [paper on OPAM + CI](http://www.ocamlpro.com/wp-content/uploads/2016/08/ocaml2016-opam-builder.pdf)
