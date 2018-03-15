@@ -57,3 +57,4 @@
     - ([OPUS](https://en.wikipedia.org/wiki/Opus_%28audio_format%29) / RFC 6716)
   - [Speex (maybe? not sure how this compares to OPUS in terms of complexity)](https://en.wikipedia.org/wiki/Speex)
 - [zstd](https://en.wikipedia.org/wiki/Zstandard) compression/decompression
+- investigate getting [libpqcrypto](https://libpqcrypto.org/) to work on mirage (replacing openssl with nocrypto as far as possible?)
