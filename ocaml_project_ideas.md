@@ -1,4 +1,9 @@
 # *Less advanced* (maybe)
+- [.po file format](http://pology.nedohodnik.net/doc/user/en_US/ch-poformat.html) for internationalization
+  - parser (using [Angstrom](https://github.com/inhabitedtype/angstrom)?)
+  - Fmt / Logs integration ?
+  - ppx ?
+
 - SOCKS proxy MirageOS unikernel
   - there's a [socks library](https://github.com/cfcs/ocaml-socks)
 
