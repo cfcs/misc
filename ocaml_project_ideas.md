@@ -2,6 +2,9 @@ a list of projects suggested by me, or other people, in passing conversation, th
 
 # *MirageOS / QubesOS integration*
 
+- text editor widget for mirage-framebuffer
+  - here's something using notty: https://github.com/takahisa/chibipad
+
 - SOCKS proxy MirageOS unikernel
   - there's a [socks library](https://github.com/cfcs/ocaml-socks)
 
