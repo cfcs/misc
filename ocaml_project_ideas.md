@@ -40,6 +40,7 @@ a list of projects suggested by me, or other people, in passing conversation, th
     - ([OPUS](https://en.wikipedia.org/wiki/Opus_%28audio_format%29) / RFC 6716)
   - AAC / MP3 ? some people seem to want proprietary formats
     - I dislike proprietary formats, mostly due to lack of public documentation or reference implementations
+    - [nice article about MP3](http://blog.bjrn.se/2008/10/lets-build-mp3-decoder.html)
 
 # *Misc ~ less advanced* (maybe)
 - [.po file format](http://pology.nedohodnik.net/doc/user/en_US/ch-poformat.html) for internationalization
