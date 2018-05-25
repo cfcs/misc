@@ -101,3 +101,5 @@ a list of projects suggested by me, or other people, in passing conversation, th
 
 - [zstd](https://en.wikipedia.org/wiki/Zstandard) compression/decompression
 - investigate getting [libpqcrypto](https://libpqcrypto.org/) to work on mirage (replacing openssl with nocrypto as far as possible?)
+
+- investigate the [open policy agent](https://github.com/open-policy-agent/opa) design for role-based access control and auditing
