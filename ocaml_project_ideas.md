@@ -38,7 +38,7 @@ a list of projects suggested by me, or other people, in passing conversation, th
   - we need audio format decoders (WAV takes too much space to be practical):
   - [FLAC](https://en.wikipedia.org/wiki/FLAC) decoder
     - [format / spec](https://xiph.org/flac/format.html)
-    - see be
+    - https://github.com/xiph/flac/blob/master/src/libFLAC/stream_decoder.c
   - [Ogg](https://en.wikipedia.org/wiki/Ogg) decoder
     - ([OPUS](https://en.wikipedia.org/wiki/Opus_%28audio_format%29) / RFC 6716)
   - AAC / MP3 ? some people seem to want proprietary formats
@@ -46,10 +46,18 @@ a list of projects suggested by me, or other people, in passing conversation, th
     - [nice article about MP3](http://blog.bjrn.se/2008/10/lets-build-mp3-decoder.html)
 
 # *Misc ~ less advanced* (maybe)
+
+- a [Trunnel](https://gitweb.torproject.org/trunnel.git) implementation - Trunnel is a DDL used by [the Tor Project](https://torproject.org) to specify their wire protocol and generate (un)parser code.
+  - see [the manual](http://www.wangafu.net/~nickm/trunnel-manual.html)
+  - either code generation or ppx or virtual machine-based
+  - There's a Golang port: https://github.com/mmcloughlin/trunnel
+
+- an implementation of [De Bruijn sequences](https://en.wikipedia.org/wiki/De_Bruijn_sequence) for used in debugging/testsuites and other cases where it is useful to learn an index from a short substring of output.
 - [.po file format](http://pology.nedohodnik.net/doc/user/en_US/ch-poformat.html) for internationalization
   - parser (using [Angstrom](https://github.com/inhabitedtype/angstrom)?)
   - Fmt / Logs integration ?
   - ppx ?
+  - OH, seems like this repo has one? [Babilim](https://github.com/Octachron/babilim)
 - pure CRC library ([CRC-32](https://en.wikipedia.org/wiki/CRC32), `CRC16`, etc)
   - there are various pure implementations around of misc CRC variants, would be nice to have them in one place
   - [openpgp crc-24](https://github.com/cfcs/ocaml-openpgp/blob/13dfb087fc4dacec33f69cc57ef768bc0a617dd7/lib/types.ml#L708-L754)
@@ -87,6 +95,7 @@ a list of projects suggested by me, or other people, in passing conversation, th
   - maybe see Camelus
   - [paper on OPAM + CI](http://www.ocamlpro.com/wp-content/uploads/2016/08/ocaml2016-opam-builder.pdf)
 - erlang-style bit-based pattern matching ppx
+- Fortran/F90-style array slicing with views [aka "array sub-objects"](http://www.mathcs.emory.edu/~cheung/Courses/561/Syllabus/6-Fortran/array4.html)
 - OpenVPN implementation
   - [SoftEther implements it](https://github.com/SoftEtherVPN/SoftEtherVPN)
     - [relevent .c file](https://github.com/SoftEtherVPN/SoftEtherVPN/blob/93d9ade990bd277539138572d7f2bcccfa108407/src/Cedar/Interop_OpenVPN.c) - and the [corresponding .h file](https://github.com/SoftEtherVPN/SoftEtherVPN/blob/93d9ade990bd277539138572d7f2bcccfa108407/src/Cedar/Interop_OpenVPN.h)
@@ -97,9 +106,11 @@ a list of projects suggested by me, or other people, in passing conversation, th
     - TODO look into Matroska
   - audio (for chat applications?)
     - [OggPCM](https://en.wikipedia.org/wiki/OggPCM)
+    - https://auphonic.com/blog/2018/06/01/codec2-podcast-on-floppy-disk/
     - [Speex (maybe? not sure how this compares to OPUS in terms of complexity)](https://en.wikipedia.org/wiki/Speex)
 
 - [zstd](https://en.wikipedia.org/wiki/Zstandard) compression/decompression
 - investigate getting [libpqcrypto](https://libpqcrypto.org/) to work on mirage (replacing openssl with nocrypto as far as possible?)
 
 - investigate the [open policy agent](https://github.com/open-policy-agent/opa) design for role-based access control and auditing
+- Developing a system for writing stream parsers/readers that can express nested states and their transitions like `root -> dict -> key` -> `root -> dict -> key -> value` safely. Encoding the entry name in the type seems to be a tricky problem :-(
