@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Python implementation of the LZW decompression function from GIF87a.
 # See gif_lzw_decoder.ml for the OCaml implementation.
@@ -17,14 +17,14 @@ def lzw_stream(v, remain, o, x, lzw_counter, lzw_code_size, lzw_min_size):
     # x:   compressed input string
     # o:   bit offset
     # *)
-    char_idx = o / 8
+    char_idx = o // 8
     if char_idx >= len(x):
         raise NEED_MORE()
 
 
     vlw = lzw_code_size + 1
     o_mod = o % 8
-    current_byte = ord(x[char_idx])
+    current_byte = ord(x[char_idx:char_idx+1]) # <-- Python2/Python3 compat
     if o_mod + vlw <= 8:
         def mask(maske,i): return ((1 << maske) -1) & i
         o = o + remain
@@ -45,7 +45,6 @@ def lzw_stream(v, remain, o, x, lzw_counter, lzw_code_size, lzw_min_size):
             raise NEXT((0, lzw_code_size+1, o, x, lzw_counter+1,
                         lzw_code_size, lzw_min_size), v)
     else:
-        print('saa koerer bussen igen v: %d o:%d remain: %d' % (v, o, remain))
         lzw_stream(v, remain,o,x,lzw_counter,lzw_code_size, lzw_min_size)
 
 
@@ -54,17 +53,15 @@ def goparse(buf, lzw_min_size, lzw_code_size):
         lzw_stream(lzw_min_size=lzw_min_size, remain=(lzw_code_size+1),
             x=buf, lzw_code_size=lzw_code_size, v=0, o=0, lzw_counter=0) ;
         raise Exception("oops")
-    except NEXT, y:
-        print('produced: next', y[:])
-        assert y[1] == 1 << lzw_min_size, 'incorrect clear code'
-        state = y[0]
+    except NEXT as y:
+        assert y.args[1] == 1 << lzw_min_size, 'incorrect clear code'
+        state = y.args[0]
     output_stream = []
     while True:
       try: lzw_stream(*state); raise Exception("the function exceptionally returned")
-      except NEXT, y:
-          state = y[0]
-          output_stream.append(y[1])
-          print('next state:', state, y[1])
+      except NEXT as y:
+          state = y.args[0]
+          output_stream.append(y.args[1])
       except FINISHED: return output_stream
 
 def main():
@@ -72,4 +69,6 @@ def main():
     #print('parsed!', goparse(b'\x8cP', 2, 2))
     print('parsed!', goparse(b'\x90\x21\x17\xca\x3b\xcd\x00\x25\xc8\x1a\x49\x04', 4, 4))
     raise Exception('loaded')
-main()
+
+if __name__ == '__main__':
+    main()

@@ -45,7 +45,6 @@ let rec lzw_stream v (remain,o,x,lzw_counter,lzw_code_size,lzw_min_size) =
         in `next ((lzw_code_size+1, o, x, lzw_counter+1,
                    lzw_code_size, lzw_min_size), v)
     end else begin
-      Printf.printf "v: %d o: %d remain: %d\n%!" v o remain ;
       lzw_stream v (remain,o,x,lzw_counter,lzw_code_size,lzw_min_size)
     end
 
