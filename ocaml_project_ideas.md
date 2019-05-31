@@ -47,6 +47,8 @@ a list of projects suggested by me, or other people, in passing conversation, th
 
 # *Misc ~ less advanced* (maybe)
 
+- implementation of [Roaring Bitmaps](https://www.roaringbitmap.org/)
+
 - a [Trunnel](https://gitweb.torproject.org/trunnel.git) implementation - Trunnel is a DDL used by [the Tor Project](https://torproject.org) to specify their wire protocol and generate (un)parser code.
   - see [the manual](http://www.wangafu.net/~nickm/trunnel-manual.html)
   - either code generation or ppx or virtual machine-based
@@ -111,6 +113,8 @@ a list of projects suggested by me, or other people, in passing conversation, th
 
 - [zstd](https://en.wikipedia.org/wiki/Zstandard) compression/decompression
 - investigate getting [libpqcrypto](https://libpqcrypto.org/) to work on mirage (replacing openssl with nocrypto as far as possible?)
-
+- homomorphic hashing, like https://code.fb.com/security/homomorphic-hashing/
+- mail client, a bit like https://sup-heliotrope.github.io/ maybe
+- https://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/
 - investigate the [open policy agent](https://github.com/open-policy-agent/opa) design for role-based access control and auditing
 - Developing a system for writing stream parsers/readers that can express nested states and their transitions like `root -> dict -> key` -> `root -> dict -> key -> value` safely. Encoding the entry name in the type seems to be a tricky problem :-(
