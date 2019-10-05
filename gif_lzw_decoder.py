@@ -42,6 +42,7 @@ def lzw_stream(v, remain, o, x, lzw_counter, lzw_code_size, lzw_min_size):
             if lzw_counter == (1 << lzw_code_size) -1:
                 lzw_counter = 0
                 lzw_code_size += 1
+                assert lzw_code_size<=12, "Appendix C.4: up to 12 bits per code"
             raise NEXT((0, lzw_code_size+1, o, x, lzw_counter+1,
                         lzw_code_size, lzw_min_size), v)
     else:
@@ -65,9 +66,9 @@ def goparse(buf, lzw_min_size, lzw_code_size):
       except FINISHED: return output_stream
 
 def main():
-    #print('parsed!', goparse(b'\x84\x1cw\x05', 2, 2))
+    print('parsed!', goparse(b'\x84\x1cw\x05', 2, 2))
     #print('parsed!', goparse(b'\x8cP', 2, 2))
-    print('parsed!', goparse(b'\x90\x21\x17\xca\x3b\xcd\x00\x25\xc8\x1a\x49\x04', 4, 4))
+    #print('parsed!', goparse(b'\x90\x21\x17\xca\x3b\xcd\x00\x25\xc8\x1a\x49\x04', 4, 4))
     raise Exception('loaded')
 
 if __name__ == '__main__':
