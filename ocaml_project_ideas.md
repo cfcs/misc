@@ -36,6 +36,7 @@ a list of projects suggested by me, or other people, in passing conversation, th
   - prototype cross-platform audio playback available in [mirage-framebuffer-audio](https://github.com/cfcs/mirage-framebuffer-audio)
     - uses signed 16-bit PCM waves at fixed frequency. we need transcoders that can produce this.
   - we need audio format decoders (WAV takes too much space to be practical):
+  - port of this? libjspeex-java/testing,unstable
   - [FLAC](https://en.wikipedia.org/wiki/FLAC) decoder
     - [format / spec](https://xiph.org/flac/format.html)
     - https://github.com/xiph/flac/blob/master/src/libFLAC/stream_decoder.c
@@ -46,6 +47,8 @@ a list of projects suggested by me, or other people, in passing conversation, th
     - [nice article about MP3](http://blog.bjrn.se/2008/10/lets-build-mp3-decoder.html)
 
 # *Misc ~ less advanced* (maybe)
+
+- [STUN protocol server](https://tools.ietf.org/html/rfc5389) for NAT traversal
 
 - implementation of [Roaring Bitmaps](https://www.roaringbitmap.org/)
 
