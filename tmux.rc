@@ -1,0 +1,4 @@
+
+# bump scrollback to 10x default:
+set-option -g history-limit 20000
+
