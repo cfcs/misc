@@ -73,7 +73,7 @@ asm("cmpq $1, %0\n"
  */
 volatile long long pext_out = 0;
 asm("pextq %0, %0, %0\n"
-    "andq $3, %0\n"
+    "andq $0b11, %0\n"
     //"ret\n"
     : "=a"(pext_out)
     : "0"(iin) );

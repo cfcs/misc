@@ -1,6 +1,6 @@
 # Miscellaneous stuff
 
-
+- [Add red color to black-and-white PDFs](./pdfcolor.py)
 - [Project ideas / wishlist for OCaml / MirageOS](./ocaml_project_ideas.md)
 - [register-xmpp-user](./register_xmpp_user), a shell script for registering XMPP accounts
 - [notes on extracting information from the Tor consensus file](parse_tor_consensus.txt)
