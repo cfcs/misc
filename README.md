@@ -1,5 +1,7 @@
 # Miscellaneous stuff
 
+- [PKCS8 ed25519 to OpenSSH conversion](./pkcs8-ed25519-to-openssh.sh)
+- [Constant time unsigned division/remainder (`divmod`)](./ct_division.py)
 - [Add red color to black-and-white PDFs](./pdfcolor.py)
 - [Project ideas / wishlist for OCaml / MirageOS](./ocaml_project_ideas.md)
 - [register-xmpp-user](./register_xmpp_user), a shell script for registering XMPP accounts
