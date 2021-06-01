@@ -50,3 +50,33 @@ let () =
        print_int num ; print_endline "")
     (List.init (String.length nibbles)
        (fun i -> nibble_to_int nibbles.[i]))
+
+(*
+let[@inline always] lowercase_hex_nibble_to_int ch : int =
+  (* converts [0-9af] to [int] in range [0-15].
+     NB: THIS FUNCTION DOES NOT HANDLE UPPERCASE [A-F] AND DOES NO
+         ERROR DETECTION. ONLY WORKS FOR [0-9a-f] - but then it's fast :-)
+  *)
+  (* camlExample__nibble_to_int_1199:
+        addq    $-32, %rax
+        andq    $-65, %rax
+        movq    %rax, %rbx
+        andq    $45, %rbx
+        shrq    $4, %rbx
+        orq     $1, %rbx
+        imulq   $71, %rbx
+        subq    %rbx, %rax
+        addq    $71, %rax
+        ret
+  *)
+  let x =
+    let x =
+      let i = Char.code ch in
+      (i + 39 - 1 - 54) in
+    x land (lnot 0x20) in
+  x - (((x land 0x16) lsr 4) * 71)
+let _ =
+  (* ended up not using this because error detection was nicer,
+     if a bit slower. *)
+  lowercase_hex_nibble_to_int
+*)
