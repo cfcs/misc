@@ -1,0 +1,13 @@
+telnetfun.txt 
+perl -e 'for($i=0;$i<256;$i++){print "$i:\xff\xfd".chr($i).":$i\n"}' | nc -l -p 2000 -v
+perl -e 'for($i=0;$i<1;$i++){print "will send:\xff\xfb\x27\ndo send:\xff\xfd\x27\nSETPLZ:\xff\xfa\x27\x00ABC\x01YO\xff\xf0\nICANHAZ:\xff\xfa\x27\x01\xff\xf0:$i\n"}' | nc -l -p 2000
+
+client trace:
+RCVD WILL NEW-ENVIRON
+SENT DONT NEW-ENVIRON
+RCVD DO NEW-ENVIRON
+SENT WILL NEW-ENVIRON
+RCVD IAC SB ENVIRON IS "ABC" VALUE "YO"
+RCVD IAC SB ENVIRON SEND 
+SENT IAC SB ENVIRON IS VAR "DISPLAY" VALUE "localhost:0"
+
