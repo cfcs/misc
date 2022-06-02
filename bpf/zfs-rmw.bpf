@@ -1,0 +1,126 @@
+/*
+ * bpftrace script to profile read-modify-write patterns in OpenZFS zvol utilization
+ *
+ * @size: histogram of dnode write sizes; these will be chunked and sent to either
+ *        dmu_buf_will_fill (when they are of block size)
+ *          @fill
+ *        dmu_buf_will_dirty (when they are not of block size)
+ *          @dmu_buf_will_dirty
+ *
+ * @stats: total count, average, sum of @size
+ *         under ideal circumstances the total is equal to @fill.total
+ *
+ * @zv_blocksize: volblocksize of the zvol
+ *
+ * @zv_name: name of the zvol, to make sense of the pointers used as indices
+ *
+ * dbuf_read: read old data from disk (or, usually, from cache)
+ * dbuf_noread: fill block with new data, this is what we want.
+*/
+
+//k:zvol_log_write {@l=kstack(5);} // crashes bpftrace
+
+//#include <sys/zvol_impl.h>
+#define MAXNAMELEN 256
+struct dmu_buf_t { // in practice we get dmu_buf_impl_t, but these are the first fields anyway:
+  uint64_t db_object;
+  uint64_t db_offset;
+  uint64_t db_size;
+  void *db_data;
+  // db_level in dmu_buf_impl_t may be interesting to look for indirections.
+};
+struct objset_t {}
+struct zilog_t {}
+struct zfs_rangelock_t {}
+struct dnode_t {}
+struct zvol_state {
+        char                    zv_name[MAXNAMELEN];    /* name */
+        uint64_t                zv_volsize;             /* advertised space */
+        uint64_t                zv_volblocksize;        /* volume block size */
+        struct objset_t                *zv_objset;     /* objset handle */
+        uint32_t                zv_flags;       /* ZVOL_* flags */
+        uint32_t                zv_open_count;  /* open counts */
+        uint32_t                zv_changed;     /* disk changed */
+        uint32_t                zv_volmode;     /* volmode */
+        struct zilog_t                 *zv_zilog;      /* ZIL handle */
+        struct zfs_rangelock_t         zv_rangelock;   /* for range locking */
+        struct dnode_t                 *zv_dn;         /* dnode hold */
+        //dataset_kstats_t        zv_kstat;       /* zvol kstats */
+        //list_node_t             zv_next;        /* next zvol_state_t linkage */
+        //uint64_t                zv_hash;        /* name hash */
+        //struct hlist_node       zv_hlink;       /* hash link */
+        //kmutex_t                zv_state_lock;  /* protects zvol_state_t */
+        //atomic_t                zv_suspend_ref; /* refcount for suspend */
+        //krwlock_t               zv_suspend_lock;        /* suspend lock */
+        //struct zvol_state_os    *zv_zso;        /* private platform state */
+};
+struct zv_request { // module/os/linux/zfs/zvol_os.c
+  struct zvol_state *zv;
+  // struct bio *bio;
+  // taskq_ent_t ent;
+};
+
+
+//k:zil_itx_create { @zil_itx_create[@zv[tid],arg0,arg1] = count(); }
+
+/*
+zvol_write(zv_request_t *arg0)
+  dmu_write_uio_dnode(dnode_t *dn, zfs_uio_t *uio, uint64 size, dmu_tx_t *tx)
+    // write to disk
+  zvol_log_write(zvol_state_t zv, tx, uint64 off, uint64 bytes, sync)
+    // write log to disk
+  dmu_tx_commit
+  zil_commit_impl
+    zvol_get_data
+      dmu_read_impl
+        dmu_buf_hold_array_by_dnode
+          dbuf_read
+            dbuf_read_verify_dnode_crypt
+*/
+k:zvol_write {
+  $zvrequest = (struct zv_request *) arg0;
+  @zv[tid] = $zvrequest->zv;
+  @zv_blocksize[@zv[tid]] = @zv[tid]->zv_volblocksize;
+  @zv_name[@zv[tid]] = @zv[tid]->zv_name;
+} kr:zvol_write { delete(@zv[tid]); } // just in case the one below didn't trigger
+
+k:zil_commit_impl {
+  delete(@zv[tid]); // on commit it will re-read from disk; we're not so interested in that.
+}
+
+k:dmu_write_uio_dnode {
+  $zv = @zv[tid];
+  @bytes=arg2 ;
+  $bytes=arg2 ;
+  @size[$zv] = hist(@bytes);
+  @stats[$zv]=stats(@bytes);
+}
+
+k:dbuf_read_verify_dnode_crypt /@zv[tid]/ {
+  @xx[@zv[tid]]=kstack();
+  @dbuf_read_verify_dnode_crypt[@zv[tid]] = count();
+}
+
+k:dbuf_redirty /@zv[tid]/ { @dbuf_redirty[@zv[tid]] = count(); }
+
+k:dmu_buf_will_dirty /@zv[tid]/ {
+  $zv = @zv[tid];
+  @dmu_buf_will_dirty[$zv] = count();
+}
+
+k:dmu_buf_will_fill /@zv[tid]/ {
+  $db = (struct dmu_buf_t *)arg0;
+  $size = $db->db_size;
+  $zv = @zv[tid];
+  @fill[$zv]=stats($size); 
+  @fill_bytes[$zv]=hist($size);
+  $modblocksize = $db->db_size % $zv->zv_volblocksize;
+  if($modblocksize != 0) {
+    @fill_modblocksize[$zv]=hist($modblocksize);
+    @bad[$zv,$size,$modblocksize,@bytes] = kstack();
+  }
+}
+
+k:dbuf_noread /@zv[tid]/ {
+  @dbuf_noread_object[@zv[tid]] = count();
+}

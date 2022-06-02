@@ -1,0 +1,14 @@
+/*
+ * bpftrace script to look for incorrect usage of fletcher_4_native_varsize in OpenZFS
+ */
+k:fletcher_4_native_varsize {
+  @c=count();
+  $size = arg1; /* arg1: buffer size */
+  $remainder = $size % 4;
+  @distribution = hist($remainder);
+  if ( $remainder ) {
+    @bad=hist($size);
+    print($size);
+    print(kstack());
+  }
+}
