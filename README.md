@@ -1,5 +1,8 @@
 # Miscellaneous stuff
 
+- [Mutexes based on Abstract Unix Sockets](./unixmutex.py)
+- [PostgreSQL hstore hashing in Python](./postgres_hstore_hash.py)
+
 - [PKCS8 ed25519 to OpenSSH conversion](./pkcs8-ed25519-to-openssh.sh)
 - [Constant time unsigned division/remainder (`divmod`)](./ct_division.py)
 - [Add red color to black-and-white PDFs](./pdfcolor.py)
